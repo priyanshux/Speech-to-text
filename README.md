@@ -1,1 +1,1 @@
-# THAT : THAT Hearing Assisstance & Transcription
+# THAT : THAT Hearing Assistance & Transcription
