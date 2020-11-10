@@ -1,0 +1,49 @@
+{% extends "layout.html"%}
+{% block content %}
+
+<h1> Lectures </h1>
+  {% for lecture in lectures %}
+  {%if current_user.id==lecture.user_id%}   
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <p class="mr-2 ">{{ lecture.date }}  | {{ lecture.starttime }}--{{lecture.endtime}} &nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+        </div>
+        <h2><a class="article-title" href="{{url_for('lecture',lecture_id=lecture.id)}}">{{ lecture.title }}</a></h2>
+        <p class="article-content">{{ lecture.details }}</p>
+      </div>
+    </article>
+  {%endif%}
+  {% endfor %}
+</div>
+<div class="col-md-4" style="margin-top: 50px">
+<div class="content-section">
+        <form method="POST" action="">
+            {{ form1.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Search</legend>
+        <div class="form-group">
+                    {{ form1.search.label(class="form-control-label") }}
+
+                    {% if form1.search.errors %}
+                        {{ form1.search(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form1.search.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form1.search(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                 <div class="form-group">
+                {{ form1.submit(class="btn btn-outline-info") }}
+            </div>
+              </fieldset>
+            </form>
+          </div>
+</div>
+{% endblock content%}
+
+  
