@@ -81,13 +81,13 @@ def getRoS():
     array_RoS = list()
     average_RoS = 0
     array_RoS = perform_this_task(3,2,time.time(),array_RoS)
-    print(array_RoS)
+    
     if array_RoS != None:
         for ros in array_RoS:
             average_RoS = average_RoS + ros
         average_RoS = average_RoS / len(array_RoS)
         
-    return average_RoS, array_RoS   
-    
-    
+    return average_RoS, array_RoS  
+
+#---------------------------------------------------------------------------------------------------------------------
 getRoS()
