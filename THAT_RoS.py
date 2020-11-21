@@ -39,22 +39,27 @@ def recognize_speech_from_mic(recognizer, microphone):
     return response
 
 #------------------------------------------------------------------------------------------------------------------- 
-# Function  -> perform_this_task(latency, wait_parameter, start_time)
+# Function  -> perform_this_task(latency, wait_parameter, start_time, array_RoS)
 # Arguments -> latency : specifies amount of time to be reduced to compensate start & end time delay during recording
 #              wait_parameter : specifies number of iterations to wait before stopping recording
 #              start_time     : specifies time when function is called
+#              array_RoS      : Array to store the rate of speech of each iteration
 # Returns   -> Array with rate of speech of each iteration
 #------------------------------------------------------------------------------------------------------------------- 
-def perform_this_task(latency, wait_parameter, start_time):
+def perform_this_task(latency, wait_parameter, start_time,array_RoS):
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
     
     guess = recognize_speech_from_mic(recognizer, microphone)
+    
     if guess["transcription"] == None:
         print("\n\nYou are not speaking...okay then bye")
-        if
+        if wait_parameter <= 0:
+            return
         else:
-            perform_this_task(time.time())
+            wait_parameter = wait_parameter -1
+            perform_this_task(latency, wait_parameter,time.time(),array_RoS):
+    
     
     time_of_speech = time.time() - start_time - latency   #Subtracting latency
     words_in_speech = sum([i.strip(string.punctuation).isalpha() for i in guess["transcription"].split()])
@@ -67,12 +72,10 @@ def perform_this_task(latency, wait_parameter, start_time):
     print("You said : ",guess["transcription"])
     print("Words in speech : ",words_in_speech) 
     print("Time Taken : ",time_of_speech)      
-    print("Rate of Speech: " + str(rate_of_speech) +" WPM.") 
+    print("Rate of Speech: " + str(rate_of_speech) +" WPM.") # Rate of speech in Words per minute
     '''
+    array_RoS.append(rate_of_speech)
     perform_this_task(time.time()) #Recursive call with current time
-#------------------------------------------------------------------------------------------------------------------- 
-
-
 #--------------------------------------------------------------------------------------------------------------------- 
 # Main Function -> Will be called when user hits the start button in RoS Feature
 #---------------------------------------------------------------------------------------------------------------------
