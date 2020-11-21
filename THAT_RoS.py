@@ -13,7 +13,7 @@ import string
 import time
 
 #--------------------------------------------------------------------------------------------------------------------- 
-# Utility Functions 
+# Utility Function to convert speech to text
 #---------------------------------------------------------------------------------------------------------------------
 def recognize_speech_from_mic(recognizer, microphone):
     if not isinstance(recognizer, sr.Recognizer):
@@ -37,17 +37,26 @@ def recognize_speech_from_mic(recognizer, microphone):
         response["error"] = "Unable to recognize speech"
 
     return response
+
 #------------------------------------------------------------------------------------------------------------------- 
-def perform_this_task(start_time):
+# Function  -> perform_this_task(latency, wait_parameter, start_time)
+# Arguments -> latency : specifies amount of time to be reduced to compensate start & end time delay during recording
+#              wait_parameter : specifies number of iterations to wait before stopping recording
+#              start_time     : specifies time when function is called
+# Returns   -> Array with rate of speech of each iteration
+#------------------------------------------------------------------------------------------------------------------- 
+def perform_this_task(latency, wait_parameter, start_time):
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
     
     guess = recognize_speech_from_mic(recognizer, microphone)
     if guess["transcription"] == None:
         print("\n\nYou are not speaking...okay then bye")
-        perform_this_task(time.time())
+        if
+        else:
+            perform_this_task(time.time())
     
-    time_of_speech = time.time() - start_time - 3   #Subtracting latency
+    time_of_speech = time.time() - start_time - latency   #Subtracting latency
     words_in_speech = sum([i.strip(string.punctuation).isalpha() for i in guess["transcription"].split()])
     rate_of_speech = (words_in_speech*60)/ time_of_speech
     
@@ -64,4 +73,10 @@ def perform_this_task(start_time):
 #------------------------------------------------------------------------------------------------------------------- 
 
 
-perform_this_task(time.time())
+#--------------------------------------------------------------------------------------------------------------------- 
+# Main Function -> Will be called when user hits the start button in RoS Feature
+#---------------------------------------------------------------------------------------------------------------------
+def getRoS():
+    array_RoS = list()
+    average_RoS = 0
+    array_RoS = perform_this_task(time.time())
