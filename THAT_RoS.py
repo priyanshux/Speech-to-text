@@ -41,42 +41,38 @@ def recognize_speech_from_mic(recognizer, microphone):
 #------------------------------------------------------------------------------------------------------------------- 
 # Function  -> perform_this_task(latency, wait_parameter, start_time, array_RoS)
 # Arguments -> latency : specifies amount of time to be reduced to compensate start & end time delay during recording
-#              wait_parameter : specifies number of iterations to wait before stopping recording
+#              wait_parameter : specifies number of consecutives iterations to wait before stopping recording
 #              start_time     : specifies time when function is called
 #              array_RoS      : Array to store the rate of speech of each iteration
 # Returns   -> Array with rate of speech of each iteration
 #------------------------------------------------------------------------------------------------------------------- 
-def perform_this_task(latency, wait_parameter, start_time,array_RoS):
-    recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
-    
-    guess = recognize_speech_from_mic(recognizer, microphone)
-    
-    if guess["transcription"] == None:
-        print("\n\nYou are not speaking...okay then bye")
-        if wait_parameter <= 0:
+def perform_this_task(latency,wait_parameter, start_time,array_RoS):
+    wait_count=0
+    while 1:
+        recognizer = sr.Recognizer()
+        microphone = sr.Microphone()
+        guess = recognize_speech_from_mic(recognizer, microphone)
+
+        if guess["transcription"] == None:
+            print("\n\nYou are not speaking...okay then bye")
+            if wait_count < wait_parameter:
+                wait_count = wait_count + 1          
             return
-        else:
-            wait_parameter = wait_parameter -1
-            perform_this_task(latency, wait_parameter,time.time(),array_RoS)
-    
-    
-    time_of_speech = time.time() - start_time - latency   #Subtracting latency
-    words_in_speech = sum([i.strip(string.punctuation).isalpha() for i in guess["transcription"].split()])
-    rate_of_speech = (words_in_speech*60)/ time_of_speech
-    
-    #-------------------------------------------------------------------------------------------------------------- 
-    # Printing messages to test results. Uncomment the lines below for testing purposes 
-    #--------------------------------------------------------------------------------------------------------------
-    '''
-    print("You said : ",guess["transcription"])
-    print("Words in speech : ", words_in_speech) 
-    print("Time Taken : ", time_of_speech)      
-    print("Rate of Speech: " + str(rate_of_speech) +" WPM.") # Rate of speech in Words per minute
-    '''
-    array_RoS.append(rate_of_speech)
-    perform_this_task(latency, wait_parameter,time.time(),array_RoS) #Recursive call with current time
-    
+
+        wait_count = 0
+        time_of_speech = time.time() - start_time - latency   #Subtracting latency
+        words_in_speech = sum([i.strip(string.punctuation).isalpha() for i in guess["transcription"].split()])
+        rate_of_speech = (words_in_speech*60)/ time_of_speech
+
+        # Printing messages to test results. Uncomment the lines below for testing purposes 
+        print("\nYou said      : ",guess["transcription"])
+        print("Words in speech : ", words_in_speech) 
+        print("Time Taken      : ", round(time_of_speech,2)+" seconds.")      
+        print("Rate of Speech  : " + str(round(rate_of_speech,2)) +" WPM.\n") # Rate of speech in Words per minute
+
+        array_RoS.append(round(rate_of_speech,2))
+        return array_RoS        
+
 #--------------------------------------------------------------------------------------------------------------------- 
 # Main Function -> Will be called when user hits the start button in RoS Feature
 # Returns       -> Average rate of speech & Array with rate of speech of each iteration
@@ -85,11 +81,13 @@ def getRoS():
     array_RoS = list()
     average_RoS = 0
     array_RoS = perform_this_task(3,2,time.time(),array_RoS)
-    for ros in array_RoS:
-        average_RoS = average_RoS + ros
+    print(array_RoS)
+    if array_RoS != None:
+        for ros in array_RoS:
+            average_RoS = average_RoS + ros
+        average_RoS = average_RoS / len(array_RoS)
         
-    average_RoS = average_RoS / len(average_RoS)
     return average_RoS, array_RoS   
     
     
-RoS()
+getRoS()
