@@ -84,10 +84,12 @@ def perform_this_task(latency, wait_parameter, start_time,array_RoS):
 def getRoS():
     array_RoS = list()
     average_RoS = 0
-    array_RoS = perform_this_task(time.time())
+    array_RoS = perform_this_task(3,2,time.time(),array_RoS)
     for ros in array_RoS:
         average_RoS = average_RoS + ros
         
     average_RoS = average_RoS / len(average_RoS)
     return average_RoS, array_RoS   
     
+    
+RoS()
