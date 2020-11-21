@@ -2,15 +2,15 @@
 # Importing Dependecies 
 #---------------------------------------------------------------------------------------------------------------------
 
-import speech_recognition as sr
-import pyaudio
-from ctypes import cast, POINTER
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-from nltk.tokenize import sent_tokenize, word_tokenize 
-from plyer import notification 
-import string
 import time
+import string
+import pyaudio
+import speech_recognition as sr
+from plyer import notification 
+from comtypes import CLSCTX_ALL
+from ctypes import cast, POINTER
+from nltk.tokenize import sent_tokenize, word_tokenize 
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 #--------------------------------------------------------------------------------------------------------------------- 
 # Utility Function to convert speech to text
@@ -56,15 +56,17 @@ def perform_this_task(latency,wait_parameter, start_time,array_RoS):
         if guess["transcription"] == None:
             print("\n\nYou are not speaking...okay then bye")
             if wait_count < wait_parameter:
-                wait_count = wait_count + 1          
-            return
+                wait_count = wait_count + 1   
+                continue
+            else:
+                return
 
         wait_count = 0
         time_of_speech = time.time() - start_time - latency   #Subtracting latency
         words_in_speech = sum([i.strip(string.punctuation).isalpha() for i in guess["transcription"].split()])
         rate_of_speech = (words_in_speech*60)/ time_of_speech
 
-        # Printing messages to test results. Uncomment the lines below for testing purposes 
+        # Printing messages to test results. Comment the lines after final testing.
         print("\nYou said      : ",guess["transcription"])
         print("Words in speech : ", words_in_speech) 
         print("Time Taken      : ", round(time_of_speech,2)+" seconds.")      
