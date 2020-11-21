@@ -1,3 +1,7 @@
+#--------------------------------------------------------------------------------------------------------------------- 
+# Importing Dependecies 
+#---------------------------------------------------------------------------------------------------------------------
+
 import speech_recognition as sr
 import pyaudio
 from ctypes import cast, POINTER
@@ -7,7 +11,9 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from plyer import notification 
 import string
 import time
- 
+
+#--------------------------------------------------------------------------------------------------------------------- 
+# Utility Functions 
 #---------------------------------------------------------------------------------------------------------------------
 def recognize_speech_from_mic(recognizer, microphone):
     if not isinstance(recognizer, sr.Recognizer):
@@ -41,15 +47,21 @@ def perform_this_task(start_time):
         print("\n\nYou are not speaking...okay then bye")
         perform_this_task(time.time())
     
-    time_of_speech = time.time() - start_time - 3
+    time_of_speech = time.time() - start_time - 3   #Subtracting latency
     words_in_speech = sum([i.strip(string.punctuation).isalpha() for i in guess["transcription"].split()])
     rate_of_speech = (words_in_speech*60)/ time_of_speech
     
+    #-------------------------------------------------------------------------------------------------------------- 
+    # Printing messages to test results. Uncomment the lines below for testing purposes 
+    #--------------------------------------------------------------------------------------------------------------
+    '''
     print("You said : ",guess["transcription"])
     print("Words in speech : ",words_in_speech) 
     print("Time Taken : ",time_of_speech)      
     print("Rate of Speech: " + str(rate_of_speech) +" WPM.") 
-    
-    perform_this_task(time.time())
+    '''
+    perform_this_task(time.time()) #Recursive call with current time
 #------------------------------------------------------------------------------------------------------------------- 
+
+
 perform_this_task(time.time())
