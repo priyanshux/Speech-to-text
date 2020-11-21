@@ -58,7 +58,7 @@ def perform_this_task(latency, wait_parameter, start_time,array_RoS):
             return
         else:
             wait_parameter = wait_parameter -1
-            perform_this_task(latency, wait_parameter,time.time(),array_RoS):
+            perform_this_task(latency, wait_parameter,time.time(),array_RoS)
     
     
     time_of_speech = time.time() - start_time - latency   #Subtracting latency
@@ -70,16 +70,24 @@ def perform_this_task(latency, wait_parameter, start_time,array_RoS):
     #--------------------------------------------------------------------------------------------------------------
     '''
     print("You said : ",guess["transcription"])
-    print("Words in speech : ",words_in_speech) 
-    print("Time Taken : ",time_of_speech)      
+    print("Words in speech : ", words_in_speech) 
+    print("Time Taken : ", time_of_speech)      
     print("Rate of Speech: " + str(rate_of_speech) +" WPM.") # Rate of speech in Words per minute
     '''
     array_RoS.append(rate_of_speech)
-    perform_this_task(time.time()) #Recursive call with current time
+    perform_this_task(latency, wait_parameter,time.time(),array_RoS) #Recursive call with current time
+    
 #--------------------------------------------------------------------------------------------------------------------- 
 # Main Function -> Will be called when user hits the start button in RoS Feature
+# Returns       -> Average rate of speech & Array with rate of speech of each iteration
 #---------------------------------------------------------------------------------------------------------------------
 def getRoS():
     array_RoS = list()
     average_RoS = 0
     array_RoS = perform_this_task(time.time())
+    for ros in array_RoS:
+        average_RoS = average_RoS + ros
+        
+    average_RoS = average_RoS / len(average_RoS)
+    return average_RoS, array_RoS   
+    
