@@ -52,7 +52,7 @@ def perform_this_task(latency,wait_parameter, start_time,array_RoS):
         recognizer = sr.Recognizer()
         microphone = sr.Microphone()
         guess = recognize_speech_from_mic(recognizer, microphone)
-
+        print(guess["transcription"])
         if guess["transcription"] == None:
             print("\n\nYou are not speaking...okay then bye")
             if wait_count < wait_parameter:
@@ -69,7 +69,7 @@ def perform_this_task(latency,wait_parameter, start_time,array_RoS):
         # Printing messages to test results. Comment the lines after final testing.
         print("\nYou said      : ",guess["transcription"])
         print("Words in speech : ", words_in_speech) 
-        print("Time Taken      : ", round(time_of_speech,2)+" seconds.")      
+        print("Time Taken      : ", str(round(time_of_speech,2))+" seconds.")      
         print("Rate of Speech  : " + str(round(rate_of_speech,2)) +" WPM.\n") # Rate of speech in Words per minute
 
         array_RoS.append(round(rate_of_speech,2))
