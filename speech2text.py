@@ -24,5 +24,6 @@ def getTranscript(filename):
         
     return text
 
-print("Say something!")
-text=getTranscript()
+filename=input("Enter file name : ")
+text=getTranscript(filename)
+print(text)
