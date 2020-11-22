@@ -23,3 +23,7 @@ def getTranscript(filename):
         return "Could not understand audio"    
         
     return text
+
+filename=input("Enter file name : ")
+text=getTranscript(filename)
+print(text)
