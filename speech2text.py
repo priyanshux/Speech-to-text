@@ -2,6 +2,7 @@ import speech_recognition as sr
 from os import path
 import os
 from videocaption import convertmp4towav
+
 def getTranscript(path):
     text=[]
     filename=convertmp4towav(path)
@@ -10,7 +11,7 @@ def getTranscript(path):
 
     # use the audio file as the audio source
     r = sr.Recognizer()
-    os.system("substream -v -i video.wav -o video.srt")
+    #os.system("substream -v -i video.wav -o video.srt")
     audio_file = sr.AudioFile(filename)
     with audio_file as source:
         audio = r.record(source)  # read the entire audio file
